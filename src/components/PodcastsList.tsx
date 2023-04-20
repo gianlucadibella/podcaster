@@ -41,7 +41,7 @@ export function PodcastsList () {
           color: 'white',
           padding: '8px',
           borderRadius: '5px'
-        } }>{ podcasts.length }</h3>
+        } }>{ filteredPodcast.length }</h3>
         <input placeholder='Filtra por podcast/autor' onChange={ (e) => {
           setFilterPodcast(e.target.value)
         } } style={ {
@@ -51,7 +51,7 @@ export function PodcastsList () {
         } } />
       </div>
       <div className='podcast-container'>
-        { podcasts.map((podcast, index) => (
+        { filteredPodcast.map((podcast, index) => (
           <div className='podcast' key={ index } onClick={() => { navigate(`/podcast/${podcast.id.attributes['im:id']}`) }}>
             <div className='podcast-info-container'>
               <img src={ podcast['im:image'][2].label } alt={ podcast['im:name'].label } className='podcast-image' />
