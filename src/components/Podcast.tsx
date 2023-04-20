@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { type Result } from '../types.d'
 import './podcast.css'
+import { formatDuration } from '../helpers/formatDuration'
 
 export function Podcast () {
   const [podcast, setPodcast] = useState<Result[]>()
-  const [description, setDescription] = useState<string | null>('')
   const [selectEpisode, setSelectEpisode] = useState<Result>()
-  console.log(selectEpisode)
+  const [feedData, setFeedData] = useState<Document>()
+
   const { podcastId } = useParams()
   const navigate = useNavigate()
 
@@ -20,28 +21,25 @@ export function Podcast () {
         throw new Error('Network response was not ok.')
       })
       .then(async data => {
-        setPodcast(JSON.parse(data.contents).results)
-        const xhr = new XMLHttpRequest()
         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        xhr.open('GET', `https://api.allorigins.win/get?url=${encodeURIComponent(`${JSON.parse(data.contents).results[0].feedUrl}`)}`, true)
-        xhr.setRequestHeader('Content-Type', 'application/xml')
-        xhr.send()
-        xhr.onreadystatechange = function () {
-          if (this.readyState === 4 && this.status === 200) {
-            // The response should now contain the XML file
-            const xmlString = this.responseText
-            const data = JSON.parse(xmlString)
-            console.log(data)
-            const parser = new DOMParser()
-            const xmlDoc = parser.parseFromString(data.contents, 'application/xml')
-            const summary = xmlDoc.getElementsByTagName('itunes:summary')[0]
-            console.log(xmlDoc)
-            setDescription(summary?.textContent ?? 'No description from XML file')
-          }
-        }
+        await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`${JSON.parse(data.contents).results[0].feedUrl}`)}`).then(async response => {
+          if (response.ok) return await response.json()
+          throw new Error('Network response was not ok.')
+        }).then(async data => {
+          const xml = new DOMParser().parseFromString(data.contents, 'text/xml')
+          console.log(xml)
+
+          setFeedData(xml)
+        })
+        console.log(data)
+        setPodcast(JSON.parse(data.contents).results)
       })
       .catch(err => { console.log(err) })
   }, [podcastId])
+
+  const returnToEpisodes = () => {
+    setSelectEpisode(undefined)
+  }
 
   return (
         <div className='detail-podcast-container'>
@@ -49,17 +47,27 @@ export function Podcast () {
               ? (
                     <div className='detail-podcast'>
                         <div className='detail-podcast-info-container'>
-                            <img src={ podcast[0].artworkUrl600 } alt={ podcast[0].collectionName } className='detail-podcast-image' />
+                            <img src={ podcast[0].artworkUrl600 } alt={ podcast[0].collectionName } className='detail-podcast-image'
+                            style={{
+                              cursor: 'pointer'
+                            }}
+                            onClick={() => { returnToEpisodes() }}/>
                             <hr />
                             <div className='detail-podcast-info'>
                                 <p style={ {
                                   margin: '0px',
-                                  fontWeight: 'bold'
-                                } }>{ podcast[0].collectionName }</p>
+                                  fontWeight: 'bold',
+                                  cursor: 'pointer'
+                                } }
+                                // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+                                onClick={() => { returnToEpisodes() }}
+                                >{ podcast[0].collectionName }</p>
                                 <p style={ {
                                   margin: '0px',
-                                  fontStyle: 'italic'
-                                } }>By { podcast[0].artistName }</p>
+                                  fontStyle: 'italic',
+                                  cursor: 'pointer'
+                                }}
+                                onClick={() => { returnToEpisodes() }}>By { podcast[0].artistName }</p>
                             </div>
                             <hr />
                             <div className='detail-description'>
@@ -74,7 +82,7 @@ export function Podcast () {
                                   textAlign: 'justify',
                                   margin: '0px'
                                 } }>
-                                    { description }
+                                    {/* { doc?.getElementById('summary')?.textContent ?? doc?.getElementsByTagName('description')[0]?.textContent } */}
                                 </p>
                             </div>
                         </div>
@@ -106,7 +114,7 @@ export function Podcast () {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            { podcast.map((episode, index) => {
+                                            { podcast.slice(1).map((episode, index) => {
                                               const backgroundColor = index % 2 === 0 ? '#FAF9F6' : '#E5F3FD'
                                               return (
                                                     <tr key={ episode.trackName } style={ { backgroundColor, cursor: 'pointer' } } onClick={ () => {
@@ -121,7 +129,7 @@ export function Podcast () {
                                                             { episode.releaseDate.toString().split('T')[0] }
                                                         </td>
                                                         <td>
-                                                            { Math.floor((episode.trackTimeMillis / 1000 / 60) << 0).toString() + ':' + Math.floor((episode.trackTimeMillis / 1000) % 60).toString() }
+                                                            { formatDuration(episode.trackTimeMillis) }
                                                         </td>
 
                                                     </tr>
@@ -137,9 +145,16 @@ export function Podcast () {
                                 <div className='episode-container'>
                                     <h1>{selectEpisode.trackName}</h1>
                                     <div className='episode-info'>
-                                        {selectEpisode.shortDescription}
+                                        <p style={ {
+                                          margin: '0px',
+                                          textAlign: 'justify'
+                                        }}>
+                                            { feedData?.getElementById('item')?.textContent ?? feedData?.getElementsByTagName('description')[0]?.textContent }
 
+                                        </p>
+                                        {selectEpisode.shortDescription}
                                         </div>
+                                        <audio controls src={selectEpisode.episodeUrl}/>
 
                                 </div>
                             )

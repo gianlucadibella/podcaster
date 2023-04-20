@@ -62,8 +62,14 @@
 
 .episode-container {
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
     border: #d3d3d3 1px solid;
     flex:1;
     padding-left: 20px;
+}
+
+td {
+    padding: 10px;
+    text-align: start;
 }
