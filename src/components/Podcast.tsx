@@ -108,12 +108,19 @@ export function Podcast () {
                 } }>
                   Description
                 </p>
+                <div>
+                  </div>
                 <p style={ {
                   textAlign: 'justify',
                   margin: '0px',
                   wordBreak: 'break-word'
                 } }>
-                  { feedData?.getElementById('summary')?.textContent ?? feedData?.getElementsByTagName('description')[0]?.textContent }
+
+                  { feedData?.activeElement === null
+                    ? (feedData?.getElementById('summary')?.textContent ?? feedData?.getElementsByTagName('description')[0]?.textContent)
+                    : (
+                        podcast[0].feedUrl
+                      ) }
                 </p>
               </div>
             </div>
