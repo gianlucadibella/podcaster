@@ -66,10 +66,32 @@
     justify-content: flex-start;
     border: #d3d3d3 1px solid;
     flex:1;
-    padding-left: 20px;
+   padding: 20px;
+}
+
+.episode-description {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex:1;
+    margin: 20px;
+    padding-bottom: 20px;
+    border-bottom: #d3d3d3 1px solid;
 }
 
 td {
     padding: 10px;
     text-align: start;
+}
+
+.episode-player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* margin: 20px; */
+}
+
+audio {
+    width: 100%;
+    
 }

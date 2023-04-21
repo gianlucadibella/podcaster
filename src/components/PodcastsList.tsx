@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { type Entry } from '../types'
+import { LocalStorage } from 'ttl-localstorage'
 
 interface Props {
   podcasts: Entry[]
@@ -13,14 +14,19 @@ export function PodcastsList () {
   const navigate = useNavigate()
 
   useEffect(() => {
-    fetch('https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json')
-      .then(async res => await res.json())
-      .then(res => {
-        setPodcasts(res.feed.entry)
-      })
-      .catch(err => {
-        console.log(err)
-      })
+    if (LocalStorage.get('podcasts') === null) {
+      fetch('https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json')
+        .then(async res => await res.json())
+        .then(res => {
+          setPodcasts(res.feed.entry)
+          LocalStorage.put('podcasts', res.feed.entry, 86400)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    } else {
+      setPodcasts(LocalStorage.get('podcasts'))
+    }
   }, [])
 
   const filteredPodcast = useMemo(() => {
@@ -41,7 +47,7 @@ export function PodcastsList () {
           color: 'white',
           padding: '8px',
           borderRadius: '5px'
-        } }>{ filteredPodcast.length }</h3>
+        } }>{ filteredPodcast?.length }</h3>
         <input placeholder='Filtra por podcast/autor' onChange={ (e) => {
           setFilterPodcast(e.target.value)
         } } style={ {

@@ -7,6 +7,28 @@
   pointer-events: none;
 }
 
+.logo {
+  background: #36d1dc;
+  background: linear-gradient(to right, #36d1dc 0%,  #5b86e5 100%);
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 30px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 900;
+}
+
+.loader {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  height: 100%;
+  align-items: center;
+}
+
+.navbar-loader {
+  margin-left:auto;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
@@ -34,6 +56,7 @@
   padding-left: 10px;
   padding-right: 10px;
   border-bottom: #d3d3d3 1px solid;
+  align-items: center;
 }
 
 .podcast {
