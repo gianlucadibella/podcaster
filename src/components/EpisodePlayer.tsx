@@ -5,26 +5,16 @@ interface Props {
 }
 export const EpisodePlayer = ({ selectEpisode }: Props) => {
   return (
-    <div className='episode-container'>
-                  <h1>{ selectEpisode.trackName }</h1>
-                  <div className='episode-info'>
-                    {/* <p style={ {
-                                          margin: '0px',
-                                          textAlign: 'justify'
-                                        }}>
-                                            { feedData?.getElementById('item')?.textContent ?? feedData?.getElementsByTagName('description')[0]?.textContent }
-                                        </p> */}
-                    <div className='episode-description'>
-                      <p style={ {
-                        margin: '0px',
-                        textAlign: 'justify'
-                      } }>
-                        { selectEpisode.description != null ? selectEpisode?.description : selectEpisode?.shortDescription }
-                      </p>
-                    </div>
-                  </div>
-                  <audio controls src={ selectEpisode.episodeUrl } className='episode-player'/>
-
-                </div>
+    <div className='flex flex-col justify-start border-[#d3d3d3] p-5'>
+      <h1>{ selectEpisode.trackName }</h1>
+      <div>
+        <div className='flex flex-col justify-start flex-1 m-5 pb-5 border-b-[#d3d3d3]'>
+          <p className='m-0 text-center'>
+            { selectEpisode.description != null ? selectEpisode?.description : selectEpisode?.shortDescription }
+          </p>
+        </div>
+      </div>
+      <audio controls src={ selectEpisode.episodeUrl } className='flex flex-col justify-center' />
+    </div>
   )
 }

@@ -2,11 +2,6 @@
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
 .logo {
   background: #36d1dc;
   background: linear-gradient(to right, #36d1dc 0%,  #5b86e5 100%);
@@ -17,111 +12,25 @@
   font-weight: 900;
 }
 
-.loader {
-  display: flex;
-  width: 100%;
-  justify-content: center;
-  height: 100%;
-  align-items: center;
-}
-
-.navbar-loader {
-  margin-left:auto;
-}
-
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
 .App-link {
   color: #61dafb;
 }
 
-.navbar {
-  display: flex;
-  background-color: white;
-  padding-left: 10px;
-  padding-right: 10px;
-  border-bottom: #d3d3d3 1px solid;
-  align-items: center;
-}
-
-.podcast {
-  display: flex; 
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border: #d3d3d3 1px solid;
+.shadow-2 {
   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
-  min-width: 350px;
-  border-radius: 5px;
-  margin-bottom: 70px;
 }
 
-.podcast:hover {
+.shadow-2:hover {
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background-color: whitesmoke;
-  cursor: pointer;
+
 }
 
-.podcast-image {
-  width: 100px;
-  height: 100px;
-  border-radius: 50%;
-  margin: -50px 0px 10px 0px;
+.shadow-3 {
   box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;;
-}
-
-.podcast-info {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.podcast-info-container {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.podcast-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 1rem;
-  margin-top: 70px;
-}
-
-.filter-container {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 10px;
-  margin-top: 10px;
-  padding-right: 10px;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, useLocation } from 'react-router-dom'
 import { type Result } from '../types.d'
 import './podcast.css'
 import { Oval } from 'react-loader-spinner'
@@ -10,60 +11,25 @@ import { LocalStorage } from 'ttl-localstorage'
 export function Podcast () {
   const [podcast, setPodcast] = useState<Result[]>()
   const [selectEpisode, setSelectEpisode] = useState<Result>()
-  const [feedData, setFeedData] = useState<Document>()
 
   const { podcastId } = useParams()
   const navigate = useNavigate()
+  const location = useLocation()
 
   useEffect(() => {
-    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
     if (LocalStorage.get(`${podcastId}`) === null) {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://itunes.apple.com/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`)}`)
         .then(async response => {
           if (response.ok) return await response.json()
           throw new Error('Network response was not ok.')
         })
         .then(async data => {
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`${JSON.parse(data.contents).results[0].feedUrl}`)}`).then(async response => {
-            if (response.ok) return await response.json()
-            throw new Error('Network response was not ok.')
-          }).then(async data => {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            LocalStorage.put(`${podcastId}-xml`, data.contents, 86400)
-            const xml = new DOMParser().parseFromString(data.contents, 'text/xml')
-            setFeedData(xml)
-          })
           setPodcast(JSON.parse(data.contents).results)
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
           LocalStorage.put(`${podcastId}`, JSON.parse(data.contents).results, 86400)
         })
         .catch(err => { console.log(err) })
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-    } else if (LocalStorage.get(`${podcastId}-xml`) != null) {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      setPodcast(LocalStorage.get(`${podcastId}`))
-
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      const xml = new DOMParser().parseFromString(LocalStorage.get(`${podcastId}-xml`), 'text/xml')
-      setFeedData(xml)
     } else {
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
       setPodcast(LocalStorage.get(`${podcastId}`))
-
-      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-      fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`${LocalStorage.get(`${podcastId}`)[0].feedUrl}`)}`).then(async response => {
-        if (response.ok) return await response.json()
-        throw new Error('Network response was not ok.')
-      }
-      ).then(async data => {
-        // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-        LocalStorage.put(`${podcastId}-xml`, data.contents, 86400)
-        const xml = new DOMParser().parseFromString(data.contents, 'text/xml')
-        setFeedData(xml)
-      }
-      ).catch(err => { console.log(err) })
     }
   }, [])
 
@@ -72,55 +38,29 @@ export function Podcast () {
   }
 
   return (
-    <div className='detail-podcast-container'>
+    <div className='flex m-7'>
       { (podcast != null) && podcast.length > 0
         ? (
-          <div className='detail-podcast'>
-            <div className='detail-podcast-info-container'>
-              <img src={ podcast[0].artworkUrl600 } alt={ podcast[0].collectionName } className='detail-podcast-image'
-                style={ {
-                  cursor: 'pointer'
-                } }
-                onClick={ () => { returnToEpisodes() } } />
+          <div className='flex flex-row m-12 flex-1'>
+            <div className='flex flex-col justify-center items-center max-w-xs p-5 border border-[#d3d3d3] shadow-1'>
+              <img src={ podcast[0].artworkUrl600 } alt={ podcast[0].collectionName } className='p-2.5 min-w-[250px] cursor-pointer'
+               onClick={ () => { returnToEpisodes() } } />
               <hr />
-              <div className='detail-podcast-info'>
-                <p style={ {
-                  margin: '0px',
-                  fontWeight: 'bold',
-                  cursor: 'pointer'
-                } }
-                  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                  onClick={ () => { returnToEpisodes() } }
+              <div className='flex flex-col items-start pl-3.5 mb-0 w-full'>
+                <p className='m-0 font-bold cursor-pointer' onClick={ () => { returnToEpisodes() } }
                 >{ podcast[0].collectionName }</p>
-                <p style={ {
-                  margin: '0px',
-                  fontStyle: 'italic',
-                  cursor: 'pointer'
-                } }
+                <p className='m-0 italic cursor-pointer'
                   onClick={ () => { returnToEpisodes() } }>By { podcast[0].artistName }</p>
               </div>
               <hr />
-              <div className='detail-description'>
-                <p style={ {
-                  margin: '0px',
-                  marginBottom: '5px',
-                  fontWeight: 'bold'
-                } }>
+              <div className='flex flex-col flex-start pl-3.5 flex-1 w-full'>
+                <p className='m-0 mb-1.5 font-bold'>
                   Description
                 </p>
                 <div>
-                  </div>
-                <p style={ {
-                  textAlign: 'justify',
-                  margin: '0px',
-                  wordBreak: 'break-word'
-                } }>
-
-                  { feedData?.activeElement === null
-                    ? (feedData?.getElementById('summary')?.textContent ?? feedData?.getElementsByTagName('description')[0]?.textContent)
-                    : (
-                        podcast[0].feedUrl
-                      ) }
+                </div>
+                <p className='text-justify m-0 break-words'>
+                  { location.state.podcast.summary.label }
                 </p>
               </div>
             </div>
@@ -135,7 +75,7 @@ export function Podcast () {
           </div>
           )
         : (
-          <div className='loader'>
+          <div className='flex w-full justify-center items-center h-full'>
             <Oval
               height={ 100 }
               width={ 100 }

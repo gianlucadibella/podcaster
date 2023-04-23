@@ -16,14 +16,14 @@ function App () {
 
   return (
     <div className="App">
-      <nav className='navbar'>
+      <nav className='flex bg-white px-2.5 border border-[#d3d3d3] items-center'>
         <Link to='/' style={ {
           textDecoration: 'none'
         } }>
           <h1 className='logo'>PODCASTER</h1>
         </Link>
         { loader && (
-          <div className='navbar-loader'>
+          <div className='ml-auto'>
             <Rings
               height="50"
               width="50"

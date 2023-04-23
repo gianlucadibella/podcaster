@@ -10,18 +10,14 @@ interface Props {
 
 export function Episode ({ podcast, setSelectEpisode, podcastId, navigate }: Props) {
   return (
-    <div className='detail-episode'>
-    <div className='episodes-quantity'>
-      <h3 style={ {
-        margin: '0px',
-        marginBottom: '5px',
-        fontWeight: 'bold'
-      } }>
+    <div className='flex-1'>
+    <div className='flex flex-start border border-[#d3d3d3] p-2.5 '>
+      <h3 className='font-bold mb-1.5 m-0'>
         Episodes: { podcast.length - 1 }
       </h3>
     </div>
-    <div className='detail-episode-list'>
-      <table style={ { width: '100%' } } className='episodes-table'>
+    <div>
+      <table className='w-full'>
         <thead>
           <tr>
             <th>
