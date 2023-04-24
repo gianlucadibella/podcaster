@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { type Entry } from '../types'
 import { LocalStorage } from 'ttl-localstorage'
+import { InputFilter } from './InputFilter'
+import { InfoCard } from './InfoCard'
 
 export function PodcastsList () {
   const [podcasts, setPodcasts] = useState<Entry[]>([])
@@ -36,31 +38,10 @@ export function PodcastsList () {
 
   return (
     <div>
-      <div className='flex flex-wrap justify-end items-center gap-4 mt-3 pr-3'>
-        <h3 className='text-white p-2 rounded-md bg-[#1da1f2]'>{ filteredPodcast?.length }</h3>
-        <input placeholder='Filtra por podcast/autor' onChange={ (e) => {
-          setFilterPodcast(e.target.value)
-        } } className='m-1.5 border border-[#d3d3d3] p-3 rounded-md'/>
-      </div>
+      <InputFilter filteredPodcast={filteredPodcast} setFilterPodcast={setFilterPodcast} />
       <div className='flex flex-wrap justify-center gap-4 mt-16'>
         { filteredPodcast.map((podcast, index) => (
-          <div className='flex flex-col justify-center items-center border border-[#d3d3d3] min-w-[350px] rounded-md mb-16 shadow-2
-          hover:bg-stone-100 hover:cursor-pointer' key={ index } onClick={ () => {
-            navigate(`/podcast/${podcast.id.attributes['im:id']}`, {
-              state: {
-                podcast
-              }
-            })
-          } }>
-            <div className='flex flex-col items-center justify-center items-center'>
-              <img src={ podcast['im:image'][2].label } alt={ podcast['im:name'].label }
-              className='shadow-3 w-24 h-24 rounded-full m-0 -mt-12 mb-2.5' />
-              <div className='flex flex-col justify-center items-center'>
-                <h4 className='max-w-[200px]'>{ podcast['im:name'].label }</h4>
-                <p className='max-w-[200px] text-base italic color-gray-400'>Author: { podcast['im:artist'].label }</p>
-              </div>
-            </div>
-          </div>
+         <InfoCard podcast={podcast} navigate={navigate} key={index}/>
         )) }
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { Children } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import App from './App'
@@ -10,7 +10,6 @@ import
 import ErrorPage from './error-page'
 import { Podcast } from './components/Podcast'
 import { PodcastsList } from './components/PodcastsList'
-import { Episode } from './components/Episode'
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

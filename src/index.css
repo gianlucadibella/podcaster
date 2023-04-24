@@ -7,6 +7,11 @@ td {
     text-align: start;
 }
 
+th {
+    padding: 10px;
+    text-align: start;
+}
+
 audio {
     width: 100%;
 }

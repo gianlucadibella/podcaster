@@ -11,22 +11,22 @@ interface Props {
 export function Episode ({ podcast, setSelectEpisode, podcastId, navigate }: Props) {
   return (
     <div className='flex-1'>
-    <div className='flex flex-start border border-[#d3d3d3] p-2.5 '>
-      <h3 className='font-bold mb-1.5 m-0'>
+    <div className='flex flex-start border border-[#d3d3d3] rounded-lg p-2.5'>
+      <h3 className='font-bold '>
         Episodes: { podcast.length - 1 }
       </h3>
     </div>
     <div>
-      <table className='w-full'>
-        <thead>
-          <tr>
-            <th>
+      <table className='w-full mt-6 rounded-lg text-left border border-separate border-tools-table-outline border-[#d3d3d3] border-1 w-full'>
+        <thead className=''>
+          <tr className=''>
+            <th className='text-start'>
               Title
             </th>
-            <th>
+            <th className='text-start'>
               Date
             </th>
-            <th>
+            <th className='text-start'>
               Duration
             </th>
           </tr>
