@@ -14,6 +14,7 @@ export function Episode ({ podcast, setSelectEpisode, podcastId, navigate }: Pro
     <div className='flex flex-start border border-[#d3d3d3] rounded-lg p-2.5'>
       <h3 className='font-bold '>
         Episodes: { podcast.length - 1 }
+        {/*  -1 porque el primer elemento es el podcast */}
       </h3>
     </div>
     <div>
@@ -33,6 +34,7 @@ export function Episode ({ podcast, setSelectEpisode, podcastId, navigate }: Pro
         </thead>
         <tbody>
           { podcast.slice(1).map((episode, index) => {
+            // Empiezo en 1 porque el primer elemento es el podcast
             const backgroundColor = index % 2 === 0 ? '#FAF9F6' : '#E5F3FD'
             return (
               <tr key={ episode.trackName } style={ { backgroundColor, cursor: 'pointer' } } onClick={ () => {
@@ -47,6 +49,7 @@ export function Episode ({ podcast, setSelectEpisode, podcastId, navigate }: Pro
                   { episode.releaseDate.toString().split('T')[0] }
                 </td>
                 <td>
+                  {/* funcion para formatear el tiempo a hh:mm:ss */}
                   { formatDuration(episode.trackTimeMillis) }
                 </td>
 

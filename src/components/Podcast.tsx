@@ -8,16 +8,22 @@ import { InfoCard } from './InfoCard'
 import './podcast.css'
 
 export function Podcast () {
+  // El componente Podcast es el que se encarga de traer los datos de la API de los episodios de un podcast en específico
   const [podcast, setPodcast] = useState<Result[]>()
   const [podcastInfo, setPodcastInfo] = useState<Entry>()
   const [selectEpisode, setSelectEpisode] = useState<Result>()
 
   const { podcastId } = useParams()
+  // useParams es un hook que me permite obtener los parámetros de la URL (en este caso el ID del podcast)
+
   const navigate = useNavigate()
+
   const location = useLocation()
+  // useLocation es un hook que me permite obtener la información de la ruta actual, util para el loader de carga.
 
   useEffect(() => {
     if (LocalStorage.get(`${podcastId}`) === null) {
+      // Si el podcast no está en el cache, se hace la petición a la API
       fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(`https://itunes.apple.com/lookup?id=${podcastId}&media=podcast&entity=podcastEpisode&limit=20`)}`)
         .then(async response => {
           if (response.ok) return await response.json()
@@ -29,6 +35,7 @@ export function Podcast () {
         })
         .catch(err => { console.log(err) })
     } else {
+      // Si el podcast está en el cache, se obtiene de ahí
       setPodcast(LocalStorage.get(`${podcastId}`))
     }
   }, [])
@@ -38,6 +45,7 @@ export function Podcast () {
   }, [])
 
   const returnToEpisodes = () => {
+    // Función para regresar a la lista de episodios
     setSelectEpisode(undefined)
   }
 

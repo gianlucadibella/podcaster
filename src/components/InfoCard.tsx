@@ -40,9 +40,11 @@ export const InfoCard = ({ podcast, returnToEpisodes, podcastInfo, selectEpisode
         </div>
         { (selectEpisode == null)
           ? (
+            // Componente para mostrar todos los episodios
             <Episode podcast={ podcast } setSelectEpisode={ setSelectEpisode } podcastId={ podcastId } navigate={ navigate } />
             )
           : (
+            // Componente para cargar el reproductor de episodios
             <EpisodePlayer selectEpisode={ selectEpisode } />
             )
         }
