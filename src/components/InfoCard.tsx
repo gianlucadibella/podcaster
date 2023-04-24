@@ -27,8 +27,8 @@ export const InfoCard = ({ podcast, returnToEpisodes, podcastInfo, selectEpisode
               onClick={ () => { returnToEpisodes() } }>By { podcast[0].artistName }</p>
           </div>
           <hr />
-          <div className='flex flex-col flex-start pl-3.5 flex-1 w-full '>
-            <p className='flex m-0 mb-1.5 font-bold'>
+          <div className='flex flex-col flex-start pl-3.5 mt-1.5 flex-1 w-full '>
+            <p className='flex m-0 mb-1 font-bold'>
               Description
             </p>
             <div>
