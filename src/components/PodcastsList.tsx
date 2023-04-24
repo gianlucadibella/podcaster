@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { type Entry } from '../types'
 import { LocalStorage } from 'ttl-localstorage'
 import { InputFilter } from './InputFilter'
-import { InfoCard } from './InfoCard'
+import { MainCard } from './MainCard'
 
 export function PodcastsList () {
   const [podcasts, setPodcasts] = useState<Entry[]>([])
@@ -41,7 +41,7 @@ export function PodcastsList () {
       <InputFilter filteredPodcast={filteredPodcast} setFilterPodcast={setFilterPodcast} />
       <div className='flex flex-wrap justify-center gap-4 mt-16'>
         { filteredPodcast.map((podcast, index) => (
-         <InfoCard podcast={podcast} navigate={navigate} key={index}/>
+         <MainCard podcast={podcast} navigate={navigate} key={index}/>
         )) }
       </div>
     </div>
