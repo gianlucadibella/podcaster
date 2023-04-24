@@ -5,7 +5,6 @@ import { type Entry, type Result } from '../types.d'
 import { Oval } from 'react-loader-spinner'
 import { LocalStorage } from 'ttl-localstorage'
 import { InfoCard } from './InfoCard'
-import './podcast.css'
 
 export function Podcast () {
   // El componente Podcast es el que se encarga de traer los datos de la API de los episodios de un podcast en específico

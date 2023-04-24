@@ -16,6 +16,6 @@
     "noEmit": true,
     "jsx": "react-jsx"
   },
-  "include": ["src", "src/helpers", "tests"],
+  "include": ["src", "src/helpers"],
   "types": ["react", "jest", "@testing-library/jest-dom"]
 }
